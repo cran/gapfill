@@ -1,0 +1,21 @@
+citHeader("To cite gapfill in publications use:")
+
+citEntry(entry = "Article",
+  title        = "Predicting missing values in spatio-temporal satellite data",
+  author       = personList(as.person("Florian Gerber"),
+                            as.person("Reinhard Furrer"),
+                            as.person("Gabriela Schaepman-Strub"),
+                            as.person("Rogier de Jong"),
+                            as.person("Micheal E. Schaepman")),
+  journal      = "ArXiv e-prints",
+  year         = "2016",
+  volume       = "",
+  number       = "",
+  pages        = "",
+  url          = "http://arxiv.org/abs/1605.01038",
+
+  textVersion  =
+  paste("F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, and M.E. Schaepman (2016).",
+        "Predicting missing values in spatio-temporal satellite data.",
+        "http://arxiv.org/abs/1605.01038")
+)
