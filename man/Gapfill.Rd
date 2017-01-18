@@ -55,7 +55,7 @@ If \code{TRUE}, messages are printed.}
 List of length 4 with the entries:
 \itemize{
  \item{\code{fill}}{ contains the gap-filled data.
-if \code{nPredict = 1}, \code{fill} is an array of dimension \code{dim(data)},
+If \code{nPredict = 1}, \code{fill} is an array of dimension \code{dim(data)},
 otherwise the array is of dimension \code{c(dim(data), nPredict)}.}
  \item{\code{mps}}{ integer vector of length equaling the number of predicted values.
 Contains the (1 dimensional) indices of the predicted values.}
@@ -76,7 +76,7 @@ but it can also be applied to other data, that is recorded at equally spaced poi
 Moreover, the function provides infrastructure for the development of new gap-fill algorithms.
 The predictions of the missing values are based on a subset-predict procedure, i.e.,
 each missing value is predicted separately by
-(1) selcting a subset of the data to a neighborhood around the missing value and
+(1) selecting a subset of the data to a neighborhood around the missing value and
 (2) predicting the values based on that subset.
 }
 \details{
@@ -89,7 +89,7 @@ Missing values are often unevenly distributed in \code{data}.
 Therefore, the size of a reasonable subset may be different depending on the position of the considered missing value.  
 The search strategy to find that subset is encoded in \code{fnSubset}.
 The function returns different subsets depending on the argument \code{i}.
-The decision whether or not a subset is suitable and the prediction itself is
+The decision whether a subset is suitable and the prediction itself is
 implemented in \code{fnPredict}.
 To be more specific, the subset-predict procedure loops over the following two steps to predict one missing value:
 \describe{
@@ -103,7 +103,7 @@ before continuing with step (1).}
 The procedure stops if one of the following criteria is met:
 \itemize{
 \item \code{fnPredict} returns a non-\code{NA} value,
-\item \code{iMax} tries have be completed,
+\item \code{iMax} tries have been completed,
 \item \code{fnSubset} returns the same subset two times in a row. 
 }
 }

@@ -46,7 +46,7 @@ NULL
 #' Moreover, the function provides infrastructure for the development of new gap-fill algorithms.
 #' The predictions of the missing values are based on a subset-predict procedure, i.e.,
 #' each missing value is predicted separately by
-#' (1) selcting a subset of the data to a neighborhood around the missing value and
+#' (1) selecting a subset of the data to a neighborhood around the missing value and
 #' (2) predicting the values based on that subset.
 #' 
 #' @param data Numeric array with four dimensions. The input (satellite) data to be gap-filled.
@@ -82,7 +82,7 @@ NULL
 #' @return List of length 4 with the entries:
 #' \itemize{
 #'  \item{\code{fill}}{ contains the gap-filled data.
-#' if \code{nPredict = 1}, \code{fill} is an array of dimension \code{dim(data)},
+#' If \code{nPredict = 1}, \code{fill} is an array of dimension \code{dim(data)},
 #' otherwise the array is of dimension \code{c(dim(data), nPredict)}.}
 #'  \item{\code{mps}}{ integer vector of length equaling the number of predicted values.
 #' Contains the (1 dimensional) indices of the predicted values.}
@@ -106,7 +106,7 @@ NULL
 #' Therefore, the size of a reasonable subset may be different depending on the position of the considered missing value.  
 #' The search strategy to find that subset is encoded in \code{fnSubset}.
 #' The function returns different subsets depending on the argument \code{i}.
-#' The decision whether or not a subset is suitable and the prediction itself is
+#' The decision whether a subset is suitable and the prediction itself is
 #' implemented in \code{fnPredict}.
 #' To be more specific, the subset-predict procedure loops over the following two steps to predict one missing value:
 #' \describe{
@@ -120,7 +120,7 @@ NULL
 #' The procedure stops if one of the following criteria is met:
 #' \itemize{
 #' \item \code{fnPredict} returns a non-\code{NA} value,
-#' \item \code{iMax} tries have be completed,
+#' \item \code{iMax} tries have been completed,
 #' \item \code{fnSubset} returns the same subset two times in a row. 
 #' }
 #' 
@@ -1032,35 +1032,53 @@ Validate <- function (dataObserved,
 #' @param zlim Numeric vector of length 2.
 #' Gives the upper and lower bound of the plotted values. 
 #' @param col Vector of colors. 
+#' @param theme Logical vector of length one.
+#' Should the ggplot2 theme be modified? 
+#' @param guides Logical vector of length one.
+#' Should ggplot2 guides be modified? 
 #' @param na.value Vector of length one.
 #' The color to be used for NA values. 
-#' @param byrow Logical vector of length one.
+#' @param panelsByrow Logical vector of length one.
 #' Indicates the ordering of the panels.
+#' @param asRaster Logical vector of length one.
+#' If \code{TRUE}, the ordering of the pixel within images is similar to the plot method of the raster package.
+#' Otherwise, the ordering is similar to \code{\link{image}}.
 #' @param xlab Character vector (or expression) of length one giving the x-axis label.
 #' @param ylab Character vector (or expression) of length one giving the y-axis label.
 #' @param colbarTitle Character vector (or expression) of length one giving the colorbar label.
 #' @param ... Additional arguments are passed to \code{ggplot}.
 #' @return Object (plot) of class \code{c("gg", "ggplot2")}.
-#' @seealso \code{\link{ndvi}}, \code{\link[ggplot2]{ggplot}}.
+#' @seealso \code{\link{ndvi}}, \code{\link[ggplot2]{ggplot2}}.
 #' @examples
 #' Image(ndvi)
 #' 
-#' p1 <- Image(ndvi, colbarTitle = "NDVI", byrow  = FALSE)
+#' p1 <- Image(ndvi, colbarTitle = "NDVI", xlab = "Year", ylab = "DOY",
+#'             panelsByrow  = FALSE)
 #' p1
 #' 
+#' library("abind")
+#' t1 <- array(rep(c(1,0), each = 5), c(5,5))
+#' t1[5,3] <- 2 
+#' t2 <- abind(t1, t1, along = 3)
+#' t3 <- abind(t2, t2, along = 4)
+#' Image(t1)
+#' Image(t2)
+#' Image(t3)
+#'
+#' \dontrun{
 #' p2 <- Image(ndvi[,,3,2], na.value = "white", colbarTitle = "NDVI") +
 #'       theme(strip.text.x = element_blank(),
 #'             strip.text.y = element_blank(),
 #'             panel.border = element_rect(fill = NA, size = 1))
 #' p2
-#' 
+#'
 #' ## place modified color bar left
 #' p2 + guides(fill = guide_colorbar(title = "NDVI", 
 #'                                   barwidth = 1,
 #'                                   barheight = 20,
-#'                                   label.position = "left", 
+#'                                   label.position = "right", 
 #'                                   legend.position = c(0, 0))) +
-#'      theme(legend.position = "left")
+#'      theme(legend.position = "right")
 #' 
 #' ## place color bar at bottom
 #' p2 + guides(fill = guide_colorbar(title = "NDVI", 
@@ -1070,89 +1088,77 @@ Validate <- function (dataObserved,
 #'                                   legend.position = c(0, 0)),
 #'                                   direction = "horizontal") +
 #'      theme(legend.position = "bottom")
-#'
+#' }
 #' @importFrom fields tim.colors
 #' @import ggplot2
 #' @export
-Image <- function(x = NULL,
-                  zlim = range(x, na.rm = TRUE),
-                  col = fields::tim.colors(1000),
-                  na.value = "black",
-                  byrow = TRUE,
-                  xlab = "",
-                  ylab = "",
-                  colbarTitle = "",
-                  ...){
-
+Image <- function (x = NULL, zlim = range(x, na.rm = TRUE), col = fields::tim.colors(1000), 
+    theme = TRUE, guides = TRUE, na.value = "black", panelsByrow = TRUE, 
+    asRaster = TRUE, xlab = "", ylab = "", colbarTitle = "", 
+    ...) 
+{
     stopifnot(2 <= length(dim(x)) && length(dim(x)) <= 4)
-    if(length(dim(x)) == 2)
+    if (length(dim(x)) == 2) 
         dim(x) <- c(dim(x), 1, 1)
-    if(length(dim(x)) == 3)
+    if (length(dim(x)) == 3) 
         dim(x) <- c(dim(x), 1)
-    if(is.logical(x))
+    if (is.logical(x)) 
         x <- array(as.numeric(x), dim(x))
-    stopifnot(is.numeric(x))
-    
     stopifnot(is.numeric(zlim))
     stopifnot(identical(length(zlim), 2L))
-
+    col <- c(col)
+    stopifnot(inherits(col, "character") || inherits(col, "numeric"))
+    theme <- as.logical(c(theme)[1])
+    guides <- as.logical(c(guides)[1])
     na.value <- na.value[1]
-
-    stopifnot(is.logical(byrow))
-    byrow <- byrow[1]
-    
+    stopifnot(is.logical(panelsByrow))
+    panelsByrow <- panelsByrow[1]
+    stopifnot(is.logical(asRaster))
+    asRaster <- asRaster[1]
     stopifnot(is.character(xlab))
     xlab <- xlab[1]
-    
+    if (identical(xlab, "")) 
+        axis.title.x <- element_blank()
+    else axis.title.x <- element_text()
     stopifnot(is.character(ylab))
     ylab <- ylab[1]
-
+    if (identical(ylab, "")) 
+        axis.title.y <- element_blank()
+    else axis.title.y <- element_text()
     stopifnot(is.character(colbarTitle))
     colbarTitle <- colbarTitle[1]
-              
-    if(!byrow)
-        x <- aperm(x, c(1,2,4,3))
-    
-    if(is.null(dimnames(x)))
-        dimnames(x) <- list(1:dim(x)[1], 1:dim(x)[2],
-                            1:dim(x)[3], 1:dim(x)[4])
-
-    plotData <- expand.grid(x = 1:dim(x)[1],
-                            y = 1:dim(x)[2],
-                            doy = dimnames(x)[[3]],
-                            year = dimnames(x)[[4]])
+    if (!panelsByrow) 
+        x <- aperm(x, c(1, 2, 4, 3))
+    if (asRaster) 
+        x <- aperm(x[dim(x)[1]:1, 1:dim(x)[2], 1:dim(x)[3], 1:dim(x)[4], 
+            drop = FALSE], c(2, 1, 3, 4))
+    if (is.null(dimnames(x))) 
+        dimnames(x) <- list(1:dim(x)[1], 1:dim(x)[2], 1:dim(x)[3], 
+            1:dim(x)[4])
+    for (i in 1:4) if (is.null(dimnames(x)[[i]])) 
+        dimnames(x)[[i]] <- 1:dim(x)[i]
+    plotData <- expand.grid(x = 1:dim(x)[1], y = 1:dim(x)[2], 
+        doy = dimnames(x)[[3]], year = dimnames(x)[[4]])
     plotData$z <- c(x)
-    
-    p <- ggplot(data = plotData,
-                mapping = aes_string(x = "x", y = "y", fill = "z"),
-                ...) +
-                   geom_tile() +
-        theme_bw() + xlab(xlab) + ylab(ylab) +
-        scale_fill_gradientn(colors = col,
-                             limits = zlim, na.value = na.value) +
-        scale_x_continuous(expand = c(0,0)) +
-        scale_y_continuous(expand = c(0,0)) +
-        coord_fixed() + facet_grid(year ~ doy) +
-        theme(line = element_blank(),
-              strip.background = element_rect(fill = "white",
-                                              color = "white"),
-              strip.text.x = element_text(),
-              strip.text.y = element_text(),
-              axis.ticks = element_blank(),
-              axis.text.x = element_blank(),
-              axis.text.y = element_blank(),
-              axis.title.x = element_blank(),
-              axis.title.y = element_blank(),
-              line = element_blank(),
-              legend.position = "right",
-              panel.border = element_blank(),
-              plot.margin = unit(c(1,1,1,1), "mm"),
-              panel.margin = unit(2, "mm")) +
-    guides(fill = guide_colorbar(title = colbarTitle,
-                                 barwidth = 1,
-                                 barheight = 10,
-                                 label.position = "right",
-                                 legend.position=c(0,0))) 
+    p <- ggplot(data = plotData, mapping = aes_string(x = "x", y = "y", fill = "z")) +
+        geom_tile() + theme_bw() + xlab(xlab) + 
+        ylab(ylab) + scale_fill_gradientn(colors = col, limits = zlim, 
+        na.value = na.value) + scale_x_continuous(expand = c(0, 
+        0), position = "top") + scale_y_continuous(expand = c(0, 0), position = "right") + coord_fixed() + 
+        facet_grid(year ~ doy)
+    if (theme) 
+        p <- p + theme(line = element_blank(), strip.background = element_rect(fill = "white", color = "white"),
+                       strip.text.x = element_text(), 
+                       strip.text.y = element_text(), axis.ticks = element_blank(), 
+                       axis.text.x = element_blank(), axis.text.y = element_blank(), 
+                       axis.title.x = axis.title.x, axis.title.y = axis.title.y, 
+                       legend.position = "left", panel.border = element_blank(), 
+                       plot.margin = unit(c(1, 1, 1, 1), "mm"),
+                       panel.spacing = unit(2, "mm"))
+    if (guides) 
+        p <- p + guides(fill = guide_colorbar(title = colbarTitle, 
+            barwidth = 1, barheight = 10, label.position = "left", 
+            legend.position = c(0, 0)))
     p
 }
 

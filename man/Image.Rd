@@ -5,8 +5,9 @@
 \title{Image Panels}
 \usage{
 Image(x = NULL, zlim = range(x, na.rm = TRUE),
-  col = fields::tim.colors(1000), na.value = "black", byrow = TRUE,
-  xlab = "", ylab = "", colbarTitle = "", ...)
+  col = fields::tim.colors(1000), theme = TRUE, guides = TRUE,
+  na.value = "black", panelsByrow = TRUE, asRaster = TRUE, xlab = "",
+  ylab = "", colbarTitle = "", ...)
 }
 \arguments{
 \item{x}{Numeric array with 4, 3, or 2 dimensions
@@ -17,11 +18,21 @@ Gives the upper and lower bound of the plotted values.}
 
 \item{col}{Vector of colors.}
 
+\item{theme}{Logical vector of length one.
+Should the ggplot2 theme be modified?}
+
+\item{guides}{Logical vector of length one.
+Should ggplot2 guides be modified?}
+
 \item{na.value}{Vector of length one.
 The color to be used for NA values.}
 
-\item{byrow}{Logical vector of length one.
+\item{panelsByrow}{Logical vector of length one.
 Indicates the ordering of the panels.}
+
+\item{asRaster}{Logical vector of length one.
+If \code{TRUE}, the ordering of the pixel within images is similar to the plot method of the raster package.
+Otherwise, the ordering is similar to \code{\link{image}}.}
 
 \item{xlab}{Character vector (or expression) of length one giving the x-axis label.}
 
@@ -42,9 +53,20 @@ can be modified using ggplot2 (and/or grid) syntax.
 \examples{
 Image(ndvi)
 
-p1 <- Image(ndvi, colbarTitle = "NDVI", byrow  = FALSE)
+p1 <- Image(ndvi, colbarTitle = "NDVI", xlab = "Year", ylab = "DOY",
+            panelsByrow  = FALSE)
 p1
 
+library("abind")
+t1 <- array(rep(c(1,0), each = 5), c(5,5))
+t1[5,3] <- 2 
+t2 <- abind(t1, t1, along = 3)
+t3 <- abind(t2, t2, along = 4)
+Image(t1)
+Image(t2)
+Image(t3)
+
+\dontrun{
 p2 <- Image(ndvi[,,3,2], na.value = "white", colbarTitle = "NDVI") +
       theme(strip.text.x = element_blank(),
             strip.text.y = element_blank(),
@@ -55,9 +77,9 @@ p2
 p2 + guides(fill = guide_colorbar(title = "NDVI", 
                                   barwidth = 1,
                                   barheight = 20,
-                                  label.position = "left", 
+                                  label.position = "right", 
                                   legend.position = c(0, 0))) +
-     theme(legend.position = "left")
+     theme(legend.position = "right")
 
 ## place color bar at bottom
 p2 + guides(fill = guide_colorbar(title = "NDVI", 
@@ -67,12 +89,12 @@ p2 + guides(fill = guide_colorbar(title = "NDVI",
                                   legend.position = c(0, 0)),
                                   direction = "horizontal") +
      theme(legend.position = "bottom")
-
+}
 }
 \author{
 Florian Gerber, \email{florian.gerber@math.uzh.ch}.
 }
 \seealso{
-\code{\link{ndvi}}, \code{\link[ggplot2]{ggplot}}.
+\code{\link{ndvi}}, \code{\link[ggplot2]{ggplot2}}.
 }
 

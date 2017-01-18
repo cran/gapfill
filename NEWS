@@ -1,0 +1,5 @@
+version 0.9.5
+- Improved version of the Image() plotting function.  
+
+version 0.9.3
+- first CRAN release.
