@@ -1,5 +1,8 @@
+version 0.9.5-2
+- dependency on ggplot2 version 2.2.1 is now correctly set.
+
 version 0.9.5
-- Improved version of the Image() plotting function.  
+- improved version of the Image() plotting function.  
 
 version 0.9.3
 - first CRAN release.
