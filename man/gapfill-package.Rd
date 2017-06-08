@@ -2,10 +2,10 @@
 % Please edit documentation in R/gapfill.R
 \docType{package}
 \name{gapfill-package}
+\alias{gapfill-package}
 \alias{Gapfill-Package}
 \alias{Gapfill-package}
 \alias{gapfill-Package}
-\alias{gapfill-package}
 \title{Overview}
 \description{
 The package provides tools to fill-in missing values in satellite data.
@@ -32,9 +32,7 @@ See \link{Extend} for more information and examples.
 function \code{\link{Image}}.
 }
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
+
 \references{
 F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
 Predicting missing values in spatio-temporal satellite data.
@@ -43,5 +41,7 @@ Predicting missing values in spatio-temporal satellite data.
 \seealso{
 \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Extend}}, \code{\link{Image}}.
 }
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}
 \keyword{package}
-

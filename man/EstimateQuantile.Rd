@@ -35,9 +35,6 @@ a <- Subset(data = ndvi, mp = c(1, 3, 1, 2), i = 0)
 EstimateQuantile(a = a, mp = attr(a, "mp"), nQuant = 2)
 
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
 \references{
 F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
 Predicting missing values in spatio-temporal satellite data.
@@ -46,4 +43,6 @@ Predicting missing values in spatio-temporal satellite data.
 \seealso{
 \code{\link{Predict}}.
 }
-
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}

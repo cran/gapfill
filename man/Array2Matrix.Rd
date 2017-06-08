@@ -26,10 +26,9 @@ Array2Matrix(a = a)
 Array2Matrix(ArrayAround(data = a, mp = c(1, 1, 1, 1),
                          size = c(1, 1, 2, 2))) 
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
 \seealso{
 \link{Index}, \code{\link{ArrayAround}}.
 }
-
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}

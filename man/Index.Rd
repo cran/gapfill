@@ -2,8 +2,9 @@
 % Please edit documentation in R/gapfill.R
 \name{Index}
 \alias{Index}
-\alias{IndexOneFour}
 \alias{IndexTwoOne}
+\alias{Index}
+\alias{IndexOneFour}
 \title{Index Conversions}
 \usage{
 IndexTwoOne(index, dimTwo)
@@ -50,4 +51,3 @@ stopifnot(a[1,1,2,2] == w[13])
 \author{
 Florian Gerber, \email{florian.gerber@math.uzh.ch}.
 }
-

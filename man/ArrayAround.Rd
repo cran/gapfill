@@ -70,4 +70,3 @@ ArrayAroundRandom(a, size = c(1, 2, 1, 2))
 \author{
 Florian Gerber, \email{florian.gerber@math.uzh.ch}.
 }
-

@@ -42,12 +42,11 @@ sByHand <- c(Mean(c(Mean(mat[,1] > mat[,2]),
 stopifnot(identical(s, sByHand))
 
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
 \references{
 F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
 Predicting missing values in spatio-temporal satellite data.
 \url{http://arxiv.org/abs/1605.01038}.
 }
-
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}

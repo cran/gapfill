@@ -2,8 +2,8 @@
 % Please edit documentation in R/gapfill.R
 \name{Extend}
 \alias{Extend}
-\alias{alternative}
 \alias{extend}
+\alias{alternative}
 \title{Implement an Alternative Gap-fill Algorithm}
 \description{
 By default, the \code{\link{Gapfill}} function uses the \code{\link{Subset}}
@@ -99,9 +99,6 @@ out5 <- Gapfill(data = ndvi, fnPredict = PredictLm,
 Image(out5$fill)
 }
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
 \references{
 F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
 Predicting missing values in spatio-temporal satellite data.
@@ -110,4 +107,6 @@ Predicting missing values in spatio-temporal satellite data.
 \seealso{
 \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Score}}, \code{\link[stats]{lm}}.
 }
-
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}

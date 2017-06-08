@@ -31,4 +31,3 @@ Its dimensions correspond to longitude, latitude, day of the year, and year.
 str(ndvi)
 Image(ndvi)
 }
-

@@ -37,7 +37,7 @@ test_that("Score_R",{
 })
 
 test_that("Score_errors",{
-  expect_error(Score(1), "not a matrix")
+  expect_error(Score(1), "Not a matrix")
   expect_equal(Score(matrix(1)), NaN)
   expect_equal(Score(matrix(1L)), NaN)
   expect_equal(Score(matrix(c(TRUE,TRUE,FALSE,TRUE), 2)), c(.5, 0))

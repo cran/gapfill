@@ -62,4 +62,3 @@ Validate(dataObserved = nn, dataFilled = out$fill,
 \author{
 Florian Gerber, \email{florian.gerber@math.uzh.ch}.
 }
-

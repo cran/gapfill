@@ -1,8 +1,8 @@
 Package: gapfill
 Type: Package
 Title: Fill Missing Values in Satellite Data
-Version: 0.9.5-2
-Date: 2017-01-19
+Version: 0.9.5-3
+Date: 2017-06-08
 Author: Florian Gerber
 Maintainer: Florian Gerber <florian.gerber@math.uzh.ch>
 Description: Tools to fill missing values in satellite data and to develop new
@@ -18,8 +18,8 @@ Suggests: roxygen2, spam, testthat, abind
 Enhances: raster, doParallel, doMPI
 LinkingTo: Rcpp
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-01-19 09:26:48 UTC; flgerb
+Packaged: 2017-06-08 19:25:38 UTC; flgerb
 Repository: CRAN
-Date/Publication: 2017-01-19 15:15:05
+Date/Publication: 2017-06-08 23:08:50 UTC

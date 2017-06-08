@@ -51,12 +51,6 @@ The function returns a \code{ggplot2} object, which
 can be modified using ggplot2 (and/or grid) syntax.
 }
 \examples{
-Image(ndvi)
-
-p1 <- Image(ndvi, colbarTitle = "NDVI", xlab = "Year", ylab = "DOY",
-            panelsByrow  = FALSE)
-p1
-
 library("abind")
 t1 <- array(rep(c(1,0), each = 5), c(5,5))
 t1[5,3] <- 2 
@@ -67,6 +61,12 @@ Image(t2)
 Image(t3)
 
 \dontrun{
+Image(ndvi)
+
+p1 <- Image(ndvi, colbarTitle = "NDVI", xlab = "Year", ylab = "DOY",
+            panelsByrow  = FALSE)
+p1
+
 p2 <- Image(ndvi[,,3,2], na.value = "white", colbarTitle = "NDVI") +
       theme(strip.text.x = element_blank(),
             strip.text.y = element_blank(),
@@ -91,10 +91,9 @@ p2 + guides(fill = guide_colorbar(title = "NDVI",
      theme(legend.position = "bottom")
 }
 }
-\author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
-}
 \seealso{
 \code{\link{ndvi}}, \code{\link[ggplot2]{ggplot2}}.
 }
-
+\author{
+Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+}
