@@ -26,9 +26,8 @@
 #' function \code{\link{Image}}.
 #' }
 #'
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}. 
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' @seealso \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Extend}}, \code{\link{Image}}.
 #' @docType package
 #' @name gapfill-package
@@ -61,11 +60,11 @@ NULL
 #' The maximum number of iterations until \code{NA} is returned as predicted value.  
 #' @param nPredict Integer vector of length 1. Specifies the length of the vector returned from \code{fnPredict}.
 #' Values larger than 1 may increase memory usage considerably. 
-#' @param subset If \code{"missing"}, all missing values in \code{data} are filled.
-#' If a logical array of the same dimensions as \code{data} or 
-#' a vector with positive integers, only the missing elements of \code{data[subset]} are filled.
-#' Note that this does not the same effect as selecting a subset of the input data, since
-#' independent of the specified subset, all values in \code{data} are used to inform the predictions.
+#' @param subset If \code{"missing"} (default), all missing values of \code{data} are replaced by predictions. 
+#' If \code{"observed"}, all observed values of \code{data} are replaced by predictions.
+#' If a logical array of dimension \code{dim(data)} or 
+#' a vector with positive integers, the elements \code{data[subset]} are replaced by predictions.
+#' Note that independently of the specified subset all provided values in \code{data} are used to inform the predictions.
 #' @param clipRange Numeric vector of length 2.
 #' Specifies the lower and the upper bound of the filled data.
 #' Values outside this range are clipped accordingly.
@@ -76,7 +75,7 @@ NULL
 #' if a parallel back-end (e.g., from the R package doParallel or doMpi) is available.
 #' See the example below and \code{\link[foreach]{foreach}} for more information. 
 #' @param verbose Logical vector of length 1.
-#' If \code{TRUE}, messages are printed.
+#' If \code{TRUE} (default), messages are printed.
 #' @param ... Additional arguments passed to \code{fnSubset} and \code{fnPredict}. 
 #'
 #' @return List of length 4 with the entries:
@@ -158,15 +157,14 @@ NULL
 #' Some parallel back-ends are platform dependent. 
 #' While this approach shortens the process time by distributing the computational workload,
 #' it does not reduce the memory footprint of the procedure.
-#' The second strategy, which  also reduces memory usage, is to split the \code{data} into several independent chunks.
+#' The second strategy, which also reduces memory usage, is to split the \code{data} into several independent chunks.
 #' Whether data chunks are independent or not depends on the function provided to \code{fnSubset}. 
 #' For example, the default \code{\link{Subset}} function never includes data that
 #' is further apart from the missing value than 1 seasonal index.
 #' Hence, \code{data[,,1:3,]} can be used to gap-fill \code{data[,,2,]}.\cr
 #'
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}. 
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' @seealso \code{\link{Extend}}, \code{\link{Subset-Predict}}, \code{\link{Image}}.
 #' @examples
 #' \dontrun{
@@ -212,51 +210,52 @@ Gapfill <- function (data,
                      fnPredict = Predict,
                      iMax = Inf, 
                      nPredict = 1L,
-                     subset = "missings",
+                     subset = "missing",
                      clipRange = c(-Inf, Inf),
                      dopar = FALSE,
                      verbose = TRUE,
                      ...) 
 {
-    stopifnot(is.array(data))
-    stopifnot(identical(length(dim(data)), 4L))
-    stopifnot(is.function(fnSubset))
+    stopifnot(is.array(data), identical(length(dim(data)), 4L),
+              is.function(fnSubset))
     fnSubset_formals <- formals(fnSubset)
-    stopifnot(all(names(fnSubset_formals)[1:3] == c("data", "mp", 
-        "i")))
+    stopifnot(all(names(fnSubset_formals)[1:3] == c("data", "mp", "i")))
     stopifnot(is.function(fnPredict))
     fnPredict_formals <- formals(fnPredict)
-    stopifnot(all(names(fnPredict_formals)[1:2] == c("a", "i")))
-    stopifnot(is.numeric(iMax))
-    stopifnot(identical(length(iMax), 1L))
-    stopifnot(iMax >= 0L)
-    stopifnot(is.numeric(nPredict))
-    stopifnot(identical(length(nPredict), 1L))
-    stopifnot(nPredict >= 1L)
-    stopifnot(subset[1] == "missings" || (identical(dim(subset), 
+    stopifnot(all(names(fnPredict_formals)[1:2] == c("a", "i")),
+              is.numeric(iMax), identical(length(iMax), 1L), iMax >= 0L,
+              is.numeric(nPredict), identical(length(nPredict), 1L),
+              nPredict >= 1L)
+    stopifnot(subset[1] %in% c("missings", "missing", "observed", "all") || (identical(dim(subset), 
         dim(data)) && is.array(subset) && is.logical(subset)) ||
-        (is.numeric(subset) && is.vector(subset)))
-    if (subset[1] == "missings") 
+        (is.numeric(subset) && is.vector(subset) && length(subset) <= length(data) &&
+         all(subset > 0) && all(subset <= length(data))))
+    if(subset[1]=="missings") subset[1] <- "missing"
+    stopifnot(is.numeric(clipRange), identical(length(clipRange), 2L),
+              clipRange[1] < clipRange[2],
+              is.logical(dopar), identical(length(dopar), 1L), 
+              is.logical(verbose), identical(length(verbose), 1L))
+    if (subset[1] == "missing") 
         mps <- which(c(is.na(data)))
-    else if (is.logical(subset))
-        mps <- which(c(is.na(data) & subset))
-    else {
-        if (any(duplicated(subset)))
+    else if (subset[1] == "observed"){
+        mps <- which(c(!is.na(data)))
+        if(verbose) message("--> Specified subset contains observed values. <--")
+    } else if (subset[1] == "all"){
+        mps <- seq_len(length(data))
+        if(verbose) message("--> Specified subset contains observed values. <--")
+    } else if (is.logical(subset)){
+        mps <- which(subset)
+        if(verbose && any(mps %in% which(!is.na(data))))
+            message("--> Specified subset contains observed values. <--")
+    } else if(is.numeric(subset)){
+        mps <- round(subset)
+        if (any(duplicated(mps)))
             stop("Argument \"subset\" contains duplicated values.")
-        mps <- which(c(is.na(data)))
-        mps <- mps[mps %in% subset]
-        if (!all(subset %in% mps))
-            stop("The values(s) ", paste(subset[!(subset %in% mps)], collapse = ", "),
-                 " of argument \"subset\" do not match missing values of \"data\".")
-    }
+        if(verbose && any(mps %in% which(!is.na(data))))
+            message("--> Specified subset contains observed values. <--")
+    } else
+        stop("invalid \"subset\" argument.")
         
-    stopifnot(is.numeric(clipRange))
-    stopifnot(identical(length(clipRange), 2L))
-    stopifnot(clipRange[1] < clipRange[2])
-    stopifnot(is.logical(dopar))
-    stopifnot(identical(length(dopar), 1L))
-    stopifnot(is.logical(verbose))
-    stopifnot(identical(length(verbose), 1L))
     dotArgs <- list(...)
     if (!all(names(dotArgs) %in% c(names(formals(fnSubset)), 
         names(formals(fnPredict))))) 
@@ -277,14 +276,18 @@ Gapfill <- function (data,
     if (verbose) {
         verb_data <- length(data)
         verb_observed <- sum(!is.na(data))
-        verb_observedP <- round(verb_observed/verb_data * 100, 1)
-        verb_missing <- verb_data - verb_observed
-        verb_missingP <- round(verb_missing/verb_data * 100, 1)
+        verb_observedP <- round(verb_observed/verb_data * 100, 0)
+        verb_missing <- sum(is.na(data))
+        verb_missingP <- round(verb_missing/verb_data * 100, 0)
         verb_topred <- length(mps)
-        verb_topredP <- round(verb_topred/verb_data * 100, 1)
+        verb_topredP <- round(verb_topred/verb_data * 100, 0)
         message(sprintf(gsub("X", nchar(verb_data),
-                             "data has %Xi values: %Xi (%2.1f%%) observed,\n                      %Xi (%2.1f%%) missing,\n                      %Xi (%2.1f%%) to predict."), 
-            verb_data, verb_observed, verb_observedP, verb_missing, 
+                             paste0("data has %Xi values: %Xi (%1.0f%%) observed\n",
+      paste0(rep(" ",18+nchar(verb_data)), collapse=""),
+      "%Xi (%1.0f%%) missing\n",
+      paste0(rep(" ",18+nchar(verb_data)), collapse=""),
+      "%Xi (%1.0f%%) to predict")), 
+      verb_data, verb_observed, verb_observedP, verb_missing, 
             verb_missingP, verb_topred, verb_topredP))
         message("started at ", time$start, ".")
     }
@@ -394,9 +397,8 @@ Gapfill <- function (data,
 #' The default values of these arguments can be changed via
 #' the \code{...} arguments of \code{\link{Gapfill}}.
 #'
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}.
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' 
 #' @seealso \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Score}}, \code{\link[stats]{lm}}.
 #' @examples
@@ -474,7 +476,6 @@ NULL
 #' @description
 #' The \code{Subset} and \code{Predict} function used in the default configuration of \code{\link{Gapfill}}.
 #' To predict a missing value, the two function are called sequentially as described the help page of \code{\link{Gapfill}}.
-#' 
 #' @param data Numeric array with four dimensions. The input (satellite) data to be gap-filled.
 #' Missing values should be encoded as \code{NA}.
 #' The data should have the dimensions: x coordinate, y coordinate, seasonal index (e.g., day of the year), and year.
@@ -499,10 +500,14 @@ Subset <- function(data, mp, i,
 #' If the criterion is not met, \code{NA} is returned.
 #' @param nQuant Integer vector of length 1. Parameter passed to \code{\link{EstimateQuantile}}.
 #' @param predictionInterval Logical vector of length 1.
+#' If \code{FALSE} (default), no prediction interval is returned.
 #' If \code{TRUE}, the predicted value together with the lower and upper bounds
 #' of an approximated 90\% prediction interval are returned.
-#' When \code{predictionInterval} \code{= TRUE}, the function returns 3 values, and hence,
-#' the argument \code{nPredict} of \code{\link{gapfill}} has to be set to 3 in order to store all returned values. 
+#' In that case, the function returns 3 values, and hence,
+#' the argument \code{nPredict} of \code{\link{gapfill}} has to be set to 3 in order to store all returned values.
+#' @param qrErrorToNA Logical vector of length 1.
+#' If \code{TRUE} (default), an error in the quentile regression fitting leads to a \code{NA} return value.
+#' If \code{FALSE}, an error in the quentile regression fitting leads to an error and stops the prediction. 
 #' @return \code{Predict} returns a numeric vector containing the predicted value
 #' (and if \code{predictionInterval} is \code{TRUE}, the lower and upper bounds of the prediction interval),
 #' or \code{NA}, if no prediction was feasible. 
@@ -536,9 +541,8 @@ Subset <- function(data, mp, i,
 #' the predicted value together with the lower and upper bounds of an approximated 90\% prediction interval.
 #' The interval combines the uncertainties introduced by \code{\link{Score}}
 #' and \code{\link{EstimateQuantile}}.
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}. 
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' @note
 #' The current implementation of \code{Subset} does not take into account
 #' that locations at the boundary of \code{data} can be neighboring to each other.
@@ -583,7 +587,8 @@ Predict <- function(a,
                     nTargetImage = 5,
                     nImages = 4,
                     nQuant = 2,
-                    predictionInterval = FALSE){
+                    predictionInterval = FALSE,
+                    qrErrorToNA = TRUE){
 
     ## arrange data in matrix
     am <- Array2Matrix(a)
@@ -607,7 +612,11 @@ Predict <- function(a,
     df <- data.frame(z = c(am),
                      rank = rep(rank(s, na.last = "keep"),
                                 each = dim(am)[1]))
-    m <- quantreg::rq(z ~ rank, tau[1], data = df)
+    m <- try(quantreg::rq(z ~ rank, tau[1], data = df), silent = qrErrorToNA[1])
+    if(class(m)[1]=="try-error"){
+        return(NA)
+    }
+    
     p <- quantreg::coef.crq(m)[1] +
          quantreg::coef.crq(m)[2] * r[mp[2]]
     p <- unname(p)
@@ -615,9 +624,15 @@ Predict <- function(a,
     if(!predictionInterval[1])
         return(p)
 
-    mu <- quantreg::rq(z ~ rank, max(tau), data = df)
-    ml <- quantreg::rq(z ~ rank, min(tau), data = df)
-
+    mu <- try(quantreg::rq(z ~ rank, max(tau), data = df), silent = qrErrorToNA[1])
+    if(class(mu)[1]=="try-error"){
+        return(NA)
+    }
+    ml <- try(quantreg::rq(z ~ rank, min(tau), data = df), silent = qrErrorToNA[1])
+    if(class(ml)[1]=="try-error"){
+        return(NA)
+    }
+    
     if(r[mp[2]] == max(df$rank, na.rm = TRUE)){
         pu <- quantreg::predict.rq(mu, newdata = data.frame(rank = r[mp[2]]))
     } else {
@@ -858,11 +873,10 @@ IndexOneFour <- function(index, dimFour){
 #' @param mat Numeric matrix. May contain \code{NA} values.
 #' @return Numeric vector of length \code{ncol(mat)}.
 #' @note Interfaces a C++ function. The R package Rcpp is used.  
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}. 
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' @importFrom Rcpp evalCpp
-#' @useDynLib gapfill
+#' @useDynLib gapfill, .registration = TRUE
 #' @examples
 #' mat <- rbind(c( 1,  2, NA),
 #'              c(NA, NA,  1),
@@ -883,7 +897,7 @@ IndexOneFour <- function(index, dimFour){
 #' 
 #' @export
 Score <- function(mat) {
-    .Call('gapfill_Score_cpp', PACKAGE = 'gapfill', mat)
+    .Call(`_gapfill_Score_cpp`, mat, PACKAGE="gapfill")
 }
 
 #' @name EstimateQuantile
@@ -905,9 +919,8 @@ Score <- function(mat) {
 #' Otherwise, a numeric vector of length 3 containing the estimated quantile and the lower and upper bounds of an
 #' approximate 90\% uncertainty interval is returned.
 #' @seealso \code{\link{Predict}}.
-#' @references F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-#' Predicting missing values in spatio-temporal satellite data.
-#' \url{http://arxiv.org/abs/1605.01038}.
+#' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
 #' @examples
 #' a <- Subset(data = ndvi, mp = c(1, 3, 1, 2), i = 0)
 #' EstimateQuantile(a = a, mp = attr(a, "mp"), nQuant = 2)
@@ -1189,6 +1202,3 @@ Image <- function (x = NULL, zlim = range(x, na.rm = TRUE), col = fields::tim.co
 #' str(ndvi)
 #' Image(ndvi)
 NULL
-
-
-

@@ -8,7 +8,7 @@
 \title{Main Function for Gap-Filling}
 \usage{
 Gapfill(data, fnSubset = Subset, fnPredict = Predict, iMax = Inf,
-  nPredict = 1L, subset = "missings", clipRange = c(-Inf, Inf),
+  nPredict = 1L, subset = "missing", clipRange = c(-Inf, Inf),
   dopar = FALSE, verbose = TRUE, ...)
 }
 \arguments{
@@ -29,11 +29,11 @@ The maximum number of iterations until \code{NA} is returned as predicted value.
 \item{nPredict}{Integer vector of length 1. Specifies the length of the vector returned from \code{fnPredict}.
 Values larger than 1 may increase memory usage considerably.}
 
-\item{subset}{If \code{"missing"}, all missing values in \code{data} are filled.
-If a logical array of the same dimensions as \code{data} or 
-a vector with positive integers, only the missing elements of \code{data[subset]} are filled.
-Note that this does not the same effect as selecting a subset of the input data, since
-independent of the specified subset, all values in \code{data} are used to inform the predictions.}
+\item{subset}{If \code{"missing"} (default), all missing values of \code{data} are replaced by predictions. 
+If \code{"observed"}, all observed values of \code{data} are replaced by predictions.
+If a logical array of dimension \code{dim(data)} or 
+a vector with positive integers, the elements \code{data[subset]} are replaced by predictions.
+Note that independently of the specified subset all provided values in \code{data} are used to inform the predictions.}
 
 \item{clipRange}{Numeric vector of length 2.
 Specifies the lower and the upper bound of the filled data.
@@ -47,7 +47,7 @@ if a parallel back-end (e.g., from the R package doParallel or doMpi) is availab
 See the example below and \code{\link[foreach]{foreach}} for more information.}
 
 \item{verbose}{Logical vector of length 1.
-If \code{TRUE}, messages are printed.}
+If \code{TRUE} (default), messages are printed.}
 
 \item{...}{Additional arguments passed to \code{fnSubset} and \code{fnPredict}.}
 }
@@ -139,7 +139,7 @@ Note that there exist other parallel back-ends implemented in other packages; su
 Some parallel back-ends are platform dependent. 
 While this approach shortens the process time by distributing the computational workload,
 it does not reduce the memory footprint of the procedure.
-The second strategy, which  also reduces memory usage, is to split the \code{data} into several independent chunks.
+The second strategy, which also reduces memory usage, is to split the \code{data} into several independent chunks.
 Whether data chunks are independent or not depends on the function provided to \code{fnSubset}. 
 For example, the default \code{\link{Subset}} function never includes data that
 is further apart from the missing value than 1 seasonal index.
@@ -184,9 +184,8 @@ Image(out$fill[,,,,3] - out$fill[,,,,2])
 }
 }
 \references{
-F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-Predicting missing values in spatio-temporal satellite data.
-\url{http://arxiv.org/abs/1605.01038}.
+F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Extend}}, \code{\link{Subset-Predict}}, \code{\link{Image}}.

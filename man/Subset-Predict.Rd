@@ -12,7 +12,7 @@
 Subset(data, mp, i, initialSize = c(10L, 10L, 1L, 5L))
 
 Predict(a, i, nTargetImage = 5, nImages = 4, nQuant = 2,
-  predictionInterval = FALSE)
+  predictionInterval = FALSE, qrErrorToNA = TRUE)
 }
 \arguments{
 \item{data}{Numeric array with four dimensions. The input (satellite) data to be gap-filled.
@@ -37,10 +37,15 @@ If the criterion is not met, \code{NA} is returned.}
 \item{nQuant}{Integer vector of length 1. Parameter passed to \code{\link{EstimateQuantile}}.}
 
 \item{predictionInterval}{Logical vector of length 1.
+If \code{FALSE} (default), no prediction interval is returned.
 If \code{TRUE}, the predicted value together with the lower and upper bounds
 of an approximated 90\% prediction interval are returned.
-When \code{predictionInterval} \code{= TRUE}, the function returns 3 values, and hence,
+In that case, the function returns 3 values, and hence,
 the argument \code{nPredict} of \code{\link{gapfill}} has to be set to 3 in order to store all returned values.}
+
+\item{qrErrorToNA}{Logical vector of length 1.
+If \code{TRUE} (default), an error in the quentile regression fitting leads to a \code{NA} return value.
+If \code{FALSE}, an error in the quentile regression fitting leads to an error and stops the prediction.}
 }
 \value{
 \code{Subset} returns an array with 4 dimensions containing the missing value
@@ -122,9 +127,8 @@ stopifnot(identical(p, Gapfill(data = ndvi, subset = 1784,
                                initialSize = iS, verbose = FALSE)$fill[1784]))
 }
 \references{
-F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-Predicting missing values in spatio-temporal satellite data.
-\url{http://arxiv.org/abs/1605.01038}.
+F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Gapfill}}, \code{\link{Extend}},

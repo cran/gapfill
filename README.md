@@ -25,7 +25,7 @@ The package can be installed with
 
 R> install.packages("gapfill")
 
-To get started the help pages 
+To get started see the example in 
 
 R> ?Gapfill
 

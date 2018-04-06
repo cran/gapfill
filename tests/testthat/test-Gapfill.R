@@ -1,4 +1,4 @@
-#require(testthat); library("gapfill", lib.loc = "../../../lib/")
+# library("testthat"); library("gapfill", lib.loc = "../../../lib/")
 context("test-Gapfill")
 
 test_that("Gapfill demo",{
@@ -6,7 +6,7 @@ test_that("Gapfill demo",{
 
 
     expect_message(fill <- Gapfill(data)$fill,
-                  "data has 3969 values: 3301 \\(83.2%\\) observed,\n                       668 \\(16.8%\\) missing,\n                       668 \\(16.8%\\) to predict.\n")
+                  "data has 3969 values: 3301 \\(83%\\) observed\n                       668 \\(17%\\) missing\n                       668 \\(17%\\) to predict\n")
                      
    ref <- c(0.5174, 0.4835, 0.4992, 0.4933, 0.5401, 0.5348, 0.5484, 0.5189, 
 0.5161, 0.5044, 0.5449, 0.5391, 0.5376, 0.5401, 0.5599, 0.5784, 
@@ -143,6 +143,84 @@ test_that("Gapfill prediction interval",{
 })
 
 
+test_that("Gapfill subset",{
+    data <- ndvi[,,2:3,2:3]
+    PredictMean <- function (a, i) mean(a, na.rm = TRUE)
+    ref <- structure(c(0.6279, 0.6241, 0.6228, 0.6215, 0.6211, 0.619, 0.6173, 
+0.6159, 0.6152, 0.6142, 0.615, 0.6134, 0.6125, 0.6096, 0.6072, 
+0.6063, 0.6061, 0.6045, 0.6039, 0.602, 0.6009, 0.6273, 0.6237, 
+0.6227, 0.6216, 0.6212, 0.6192, 0.6175, 0.6161, 0.6154, 0.6144, 
+0.6151, 0.6137, 0.6128, 0.6098, 0.6075, 0.6067, 0.6065, 0.605, 
+0.6044, 0.6026, 0.6016, 0.6284, 0.625, 0.624, 0.6228, 0.6223, 
+0.6203, 0.6187, 0.6173, 0.6166, 0.6156, 0.6163, 0.6151, 0.6143, 
+0.6115, 0.6093, 0.6084, 0.6082, 0.6065, 0.6057, 0.6039, 0.6028, 
+0.6282, 0.6251, 0.6242, 0.6231, 0.6226, 0.6206, 0.6191, 0.6178, 
+0.617, 0.6162, 0.6168, 0.6157, 0.615, 0.6123, 0.6102, 0.6095, 
+0.6094, 0.6076, 0.6068, 0.6051, 0.6041, 0.6266, 0.6239, 0.6232, 
+0.6223, 0.6221, 0.6203, 0.6189, 0.6176, 0.617, 0.6164, 0.6172, 
+0.6164, 0.6159, 0.6135, 0.6117, 0.611, 0.611, 0.6095, 0.6089, 
+0.6073, 0.6067, 0.6255, 0.623, 0.6225, 0.6216, 0.6211, 0.6195, 
+0.6182, 0.6172, 0.6168, 0.6163, 0.617, 0.6163, 0.616, 0.6139, 
+0.6122, 0.6117, 0.6117, 0.6103, 0.6097, 0.6083, 0.6077, 0.6244, 
+0.6221, 0.6215, 0.6206, 0.6199, 0.6183, 0.6172, 0.6163, 0.6159, 
+0.6156, 0.6165, 0.6159, 0.6157, 0.6138, 0.6123, 0.6118, 0.6119, 
+0.6103, 0.6098, 0.6083, 0.6078, 0.623, 0.621, 0.6203, 0.6194, 
+0.6189, 0.6174, 0.6164, 0.6157, 0.6153, 0.6153, 0.6161, 0.6158, 
+0.616, 0.6143, 0.6129, 0.6126, 0.6126, 0.6113, 0.6108, 0.6094, 
+0.6086, 0.6233, 0.6213, 0.6208, 0.6198, 0.6194, 0.618, 0.617, 
+0.6162, 0.6159, 0.6158, 0.6165, 0.6162, 0.6165, 0.6148, 0.6136, 
+0.6133, 0.6133, 0.6119, 0.6114, 0.6102, 0.6094, 0.6225, 0.6207, 
+0.6201, 0.6192, 0.6188, 0.6176, 0.6167, 0.6161, 0.6158, 0.6158, 
+0.6165, 0.6163, 0.6165, 0.615, 0.6139, 0.6136, 0.6136, 0.6123, 
+0.6118, 0.6109, 0.6103, 0.621, 0.6193, 0.6189, 0.6182, 0.6179, 
+0.617, 0.6162, 0.6157, 0.6155, 0.6155, 0.6163, 0.6161, 0.6163, 
+0.6149, 0.6138, 0.6136, 0.6136, 0.6124, 0.6122, 0.6116, 0.6113, 
+0.6211, 0.6192, 0.6187, 0.6179, 0.6175, 0.6165, 0.6158, 0.6152, 
+0.6149, 0.6149, 0.6156, 0.6154, 0.6157, 0.6143, 0.6132, 0.6128, 
+0.6128, 0.6114, 0.6113, 0.6104, 0.61, 0.6179, 0.6159, 0.6154, 
+0.6147, 0.6144, 0.6134, 0.6128, 0.6122, 0.6121, 0.6123, 0.6133, 
+0.6133, 0.6136, 0.6123, 0.6112, 0.6109, 0.6109, 0.6096, 0.6097, 
+0.6091, 0.6087, 0.6155, 0.6134, 0.6129, 0.6122, 0.6119, 0.6108, 
+0.6103, 0.6098, 0.6098, 0.6102, 0.6113, 0.6116, 0.6123, 0.611, 
+0.6096, 0.6093, 0.6093, 0.6081, 0.6083, 0.6076, 0.6072, 0.6131, 
+0.6108, 0.6103, 0.6095, 0.6092, 0.6081, 0.6076, 0.6073, 0.6074, 
+0.6079, 0.6093, 0.6098, 0.6107, 0.6093, 0.6079, 0.6075, 0.6076, 
+0.6064, 0.6066, 0.6059, 0.6057, 0.6123, 0.6101, 0.6099, 0.6093, 
+0.6091, 0.6079, 0.6074, 0.6071, 0.6071, 0.6077, 0.6092, 0.61, 
+0.6114, 0.6102, 0.609, 0.6085, 0.6087, 0.6073, 0.6076, 0.607, 
+0.6067, 0.6122, 0.6101, 0.6101, 0.6096, 0.6094, 0.6081, 0.6075, 
+0.6072, 0.6071, 0.6075, 0.6092, 0.6096, 0.6098, 0.609, 0.6083, 
+0.6081, 0.6088, 0.6077, 0.6081, 0.6076, 0.6069, 0.6154, 0.6129, 
+0.6126, 0.6121, 0.6117, 0.6103, 0.6093, 0.6083, 0.6081, 0.6085, 
+0.6098, 0.6107, 0.6113, 0.6107, 0.6102, 0.6092, 0.6078, 0.6058, 
+0.6065, 0.6056, 0.6046, 0.6158, 0.6167, 0.6176, 0.617, 0.6164, 
+0.6146, 0.6135, 0.6123, 0.6117, 0.6116, 0.6125, 0.6138, 0.6147, 
+0.6146, 0.6145, 0.6142, 0.6135, 0.6118, 0.6108, 0.6103, 0.6098, 
+0.6125, 0.6133, 0.6139, 0.6141, 0.614, 0.6143, 0.6148, 0.6151, 
+0.6154, 0.6167, 0.6172, 0.6189, 0.6203, 0.6206, 0.6209, 0.6211, 
+0.6211, 0.6204, 0.6206, 0.6214, 0.6226, 0.6109, 0.612, 0.6129, 
+0.6132, 0.6132, 0.6136, 0.6142, 0.6149, 0.6155, 0.6168, 0.6173, 
+0.6193, 0.6211, 0.6217, 0.6225, 0.6231, 0.6232, 0.6226, 0.6229, 
+0.6239, 0.6251), .Dim = c(21L, 21L))
+    ref <- abind::abind(ref, ref, along=3); ref <- abind::abind(ref, ref, along=4)
+    expect_equal(Gapfill(data, fnPredict=PredictMean, subset="all")$fill, ref,
+                 check.attributes = FALSE, tolerance=1e-4)
+    ref_m <- data; ref_m[is.na(data)] <- ref[is.na(data)]
+    expect_equal(Gapfill(data, fnPredict=PredictMean, subset="missings")$fill, ref_m,
+                 check.attributes = FALSE, tolerance=1e-4)
+    ref_o <- ref; ref_o[is.na(data)] <- NA
+    expect_equal(Gapfill(data, fnPredict=PredictMean, subset="observed")$fill, ref_o,
+                 check.attributes = FALSE, tolerance=1e-4)
+    sub1 <- sample(seq_along(data), 100)
+    ref_sub1 <- data; ref_sub1[sub1] <- ref[sub1]
+    expect_equal(Gapfill(data, fnPredict=PredictMean, subset=sub1)$fill, ref_sub1,
+                 check.attributes = FALSE, tolerance=1e-4)
+    sub2 <- array(FALSE, dim(data)); sub2[sample(seq_along(data), 100)] <- TRUE
+    ref_sub2 <- data; ref_sub2[sub2] <- ref[sub2]
+    expect_equal(Gapfill(data, fnPredict=PredictMean, subset=sub2)$fill, ref_sub2,
+                 check.attributes = FALSE, tolerance=1e-4)
+})
+
 test_that("Gapfill args",{
   expect_error(Gapfill(),
                "argument \"data\" is missing, with no default")
@@ -152,7 +230,6 @@ test_that("Gapfill args",{
                "identical\\(length\\(dim\\(data\\)\\), 4L\\) is not TRUE")
   expect_error(Gapfill(array(1, c(1,2,3,4,5))),
                "identical\\(length\\(dim\\(data\\)\\), 4L\\) is not TRUE")
-
   data <- ndvi[,,1:2,1:2]
   expect_error(Gapfill(data = data, fnSubset = 1),
                "is.function\\(fnSubset\\) is not TRUE")
@@ -193,15 +270,19 @@ test_that("Gapfill args",{
   expect_error(Gapfill(data = data, subset = c(1, 1)),
                "subset\\[1\\] == \"missings\" || \\(identical\\(dim\\(subset\\), dim\\(data\\)\\) &&  .... is not TRUE")
   expect_error(Gapfill(data = data,
-                       subset = c(154, 155, 155.5)),
-               "The values\\(s\\) 154, 155.5 of argument \"subset\" do not match missing values of \"data\".")
-
-   expect_error(Gapfill(data = data,
                        subset = c(8, 8)),
                "Argument \"subset\" contains duplicated values.")
   expect_equal(Gapfill(data = data, subset = 155)$fill[155],
                0.1527, tolerance = 1e-3)
-  
+  data2 <- data[1:5,1:5,,]
+  fill2_obs <- Gapfill(data = data2, fnPredict=function(a, i) mean(a, na.rm=TRUE),
+                       subset = "observed")$fill
+  expect_equal(fill2_obs[!is.na(fill2_obs)], rep(mean(data2, na.rm=TRUE), sum(!is.na(data2))))
+  expect_equal(!is.na(fill2_obs), !is.na(data2))
+  fill2_all <- Gapfill(data = data2, fnPredict=function(a, i) mean(a, na.rm=TRUE),
+                       subset = "all")$fill
+  expect_true(all(!is.na(fill2_all)))
+  expect_equal(fill2_all, array(mean(data2, na.rm=TRUE), dim(data2), dimnames=dimnames(data2)))
   
   expect_error(Gapfill(data = data, clipRange = TRUE),
                "is.numeric\\(clipRange\\) is not TRUE")

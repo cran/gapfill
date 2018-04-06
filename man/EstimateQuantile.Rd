@@ -36,9 +36,8 @@ EstimateQuantile(a = a, mp = attr(a, "mp"), nQuant = 2)
 
 }
 \references{
-F. Gerber, R. Furrer, G. Schaepman-Strub, R. de Jong, M. E. Schaepman, 2016,
-Predicting missing values in spatio-temporal satellite data.
-\url{http://arxiv.org/abs/1605.01038}.
+F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Predict}}.

@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // Score_cpp
 NumericVector Score_cpp(NumericMatrix mat);
-RcppExport SEXP gapfill_Score_cpp(SEXP matSEXP) {
+RcppExport SEXP _gapfill_Score_cpp(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"gapfill_Score_cpp", (DL_FUNC) &gapfill_Score_cpp, 1},
+    {"_gapfill_Score_cpp", (DL_FUNC) &_gapfill_Score_cpp, 1},
     {NULL, NULL, 0}
 };
 

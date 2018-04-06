@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 double MeanNA_cpp(NumericVector x) {
   int n = x.size() ;
-  double s = 0;
+  double s = 0 ;
   int notNA = 0 ;
   
   for( int i=0; i<n; i++){
