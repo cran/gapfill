@@ -4,14 +4,16 @@
 \name{ndvi}
 \alias{ndvi}
 \title{NDVI Data from Alaska}
-\format{Numeric array with 4 dimensions. As indicated by the dimnames of the array:
+\format{
+Numeric array with 4 dimensions. As indicated by the dimnames of the array:
 \itemize{
 \item{dim 1:} {longitude,}
 \item{dim 2:} {latitude,}
 \item{dim 3:} {day of the year,}
 \item{dim 4:} {year.}
 }
-The values are NDVI values, and hence, between 0 and 1. Missing values are encoded as \code{NA}.}
+The values are NDVI values, and hence, between 0 and 1. Missing values are encoded as \code{NA}.
+}
 \source{
 The actual MOD13A data product is available from NASA EOSDIS Land Processes DAAC,
 USGS Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota \url{https://lpdaac.usgs.gov}.

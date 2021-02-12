@@ -6,13 +6,19 @@
 \alias{Predict}
 \alias{fnSubset}
 \alias{fnPredict}
-\alias{Predict}
 \title{Subset and Predict Functions}
 \usage{
 Subset(data, mp, i, initialSize = c(10L, 10L, 1L, 5L))
 
-Predict(a, i, nTargetImage = 5, nImages = 4, nQuant = 2,
-  predictionInterval = FALSE, qrErrorToNA = TRUE)
+Predict(
+  a,
+  i,
+  nTargetImage = 5,
+  nImages = 4,
+  nQuant = 2,
+  predictionInterval = FALSE,
+  qrErrorToNA = TRUE
+)
 }
 \arguments{
 \item{data}{Numeric array with four dimensions. The input (satellite) data to be gap-filled.
@@ -128,12 +134,12 @@ stopifnot(identical(p, Gapfill(data = ndvi, subset = 1784,
 }
 \references{
 F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Gapfill}}, \code{\link{Extend}},
 \code{\link{EstimateQuantile}}, \code{\link{Score}}, \code{\link{ndvi}}.
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

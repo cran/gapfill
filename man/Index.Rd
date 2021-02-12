@@ -3,7 +3,6 @@
 \name{Index}
 \alias{Index}
 \alias{IndexTwoOne}
-\alias{Index}
 \alias{IndexOneFour}
 \title{Index Conversions}
 \usage{
@@ -49,5 +48,5 @@ stopifnot(a[1,1,2,2] == w[13])
 
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

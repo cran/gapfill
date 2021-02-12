@@ -4,10 +4,20 @@
 \alias{Image}
 \title{Image Panels}
 \usage{
-Image(x = NULL, zlim = range(x, na.rm = TRUE),
-  col = fields::tim.colors(1000), theme = TRUE, guides = TRUE,
-  na.value = "black", panelsByrow = TRUE, asRaster = TRUE, xlab = "",
-  ylab = "", colbarTitle = "", ...)
+Image(
+  x = NULL,
+  zlim = range(x, na.rm = TRUE),
+  col = fields::tim.colors(1000),
+  theme = TRUE,
+  guides = TRUE,
+  na.value = "black",
+  panelsByrow = TRUE,
+  asRaster = TRUE,
+  xlab = "",
+  ylab = "",
+  colbarTitle = "",
+  ...
+)
 }
 \arguments{
 \item{x}{Numeric array with 4, 3, or 2 dimensions
@@ -95,5 +105,5 @@ p2 + guides(fill = guide_colorbar(title = "NDVI",
 \code{\link{ndvi}}, \code{\link[ggplot2]{ggplot2}}.
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

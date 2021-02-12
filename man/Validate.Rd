@@ -5,8 +5,12 @@
 \alias{validate}
 \title{Validation with RMSE}
 \usage{
-Validate(dataObserved, dataFilled, dataTrue, include = rep(TRUE,
-  length(dataObserved)))
+Validate(
+  dataObserved,
+  dataFilled,
+  dataTrue,
+  include = rep(TRUE, length(dataObserved))
+)
 }
 \arguments{
 \item{dataObserved}{Numeric vector containing the observed data.}
@@ -60,5 +64,5 @@ Validate(dataObserved = nn, dataFilled = out$fill,
 
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

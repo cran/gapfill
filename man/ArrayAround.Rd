@@ -7,8 +7,12 @@
 \usage{
 ArrayAround(data, mp, size)
 
-ArrayAroundRandom(data, size = c(0L, 0L, 0L, 0L), target = c("all",
-  "missing", "observed"), verbose = TRUE)
+ArrayAroundRandom(
+  data,
+  size = c(0L, 0L, 0L, 0L),
+  target = c("all", "missing", "observed"),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{Array with 4 dimensions.}
@@ -68,5 +72,5 @@ ArrayAroundRandom(a)
 ArrayAroundRandom(a, size = c(1, 2, 1, 2))
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

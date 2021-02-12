@@ -7,9 +7,18 @@
 \alias{Gap-fill}
 \title{Main Function for Gap-Filling}
 \usage{
-Gapfill(data, fnSubset = Subset, fnPredict = Predict, iMax = Inf,
-  nPredict = 1L, subset = "missing", clipRange = c(-Inf, Inf),
-  dopar = FALSE, verbose = TRUE, ...)
+Gapfill(
+  data,
+  fnSubset = Subset,
+  fnPredict = Predict,
+  iMax = Inf,
+  nPredict = 1L,
+  subset = "missing",
+  clipRange = c(-Inf, Inf),
+  dopar = FALSE,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{Numeric array with four dimensions. The input (satellite) data to be gap-filled.
@@ -185,11 +194,11 @@ Image(out$fill[,,,,3] - out$fill[,,,,2])
 }
 \references{
 F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Extend}}, \code{\link{Subset-Predict}}, \code{\link{Image}}.
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

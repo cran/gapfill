@@ -101,11 +101,11 @@ Image(out5$fill)
 }
 \references{
 F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}.
+in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}.
 }
 \seealso{
 \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Score}}, \code{\link[stats]{lm}}.
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

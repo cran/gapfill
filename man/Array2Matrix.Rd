@@ -30,5 +30,5 @@ Array2Matrix(ArrayAround(data = a, mp = c(1, 1, 1, 1),
 \link{Index}, \code{\link{ArrayAround}}.
 }
 \author{
-Florian Gerber, \email{florian.gerber@math.uzh.ch}.
+Florian Gerber, \email{flora.fauna.gerber@gmail.com}.
 }

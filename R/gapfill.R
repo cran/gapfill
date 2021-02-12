@@ -1,6 +1,6 @@
 #' @name gapfill-package
 #' @aliases Gapfill-Package Gapfill-package gapfill-Package 
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Overview
 #' @description
 #' The package provides tools to fill-in missing values in satellite data.
@@ -27,7 +27,7 @@
 #' }
 #'
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' @seealso \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Extend}}, \code{\link{Image}}.
 #' @docType package
 #' @name gapfill-package
@@ -36,7 +36,7 @@ NULL
 
 #' @name Gapfill
 #' @aliases gapfill gap-fill Gap-fill
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Main Function for Gap-Filling
 #' @description
 #' The function fills (predicts) missing values in satellite data.
@@ -164,7 +164,7 @@ NULL
 #' Hence, \code{data[,,1:3,]} can be used to gap-fill \code{data[,,2,]}.\cr
 #'
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' @seealso \code{\link{Extend}}, \code{\link{Subset-Predict}}, \code{\link{Image}}.
 #' @examples
 #' \dontrun{
@@ -367,7 +367,7 @@ Gapfill <- function (data,
 #' @name Extend
 #' @aliases extend alternative
 #' @rdname Extend
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Implement an Alternative Gap-fill Algorithm
 #' @description
 #' By default, the \code{\link{Gapfill}} function uses the \code{\link{Subset}}
@@ -398,7 +398,7 @@ Gapfill <- function (data,
 #' the \code{...} arguments of \code{\link{Gapfill}}.
 #'
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' 
 #' @seealso \code{\link{Gapfill}}, \code{\link{Subset-Predict}}, \code{\link{Score}}, \code{\link[stats]{lm}}.
 #' @examples
@@ -471,7 +471,7 @@ NULL
 #' @name Subset-Predict
 #' @aliases Subset Predict fnSubset fnPredict
 #' @rdname Subset-Predict
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Subset and Predict Functions
 #' @description
 #' The \code{Subset} and \code{Predict} function used in the default configuration of \code{\link{Gapfill}}.
@@ -542,7 +542,7 @@ Subset <- function(data, mp, i,
 #' The interval combines the uncertainties introduced by \code{\link{Score}}
 #' and \code{\link{EstimateQuantile}}.
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' @note
 #' The current implementation of \code{Subset} does not take into account
 #' that locations at the boundary of \code{data} can be neighboring to each other.
@@ -650,7 +650,7 @@ Predict <- function(a,
 
 #' @name ArrayAround
 #' @rdname ArrayAround
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Subset an Array with 4 dimensions
 #' @description Given an array \code{data} with 4 dimensions,
 #' a subset around the element with coordinates \code{mp} ("missing position") is extracted.
@@ -759,7 +759,7 @@ ArrayAroundRandom <- function(data, size = c(0L, 0L, 0L, 0L),
 
 #' @name Array2Matrix
 #' @rdname Array2Matrix
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Convert an Array with 4 Dimensions into a Matrix
 #' @description Converts the array, \code{a}, with 4 dimensions, \code{c(d1, d2, d3, d4)},
 #' into a matrix with \code{d1*d2} rows and \code{d3*d4} columns.
@@ -796,7 +796,7 @@ Array2Matrix <- function(a){
 #' @name Index
 #' @aliases IndexTwoOne
 #' @rdname Index
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Index Conversions
 #' @description
 #' Converts an index from the first length to the second length.
@@ -869,12 +869,12 @@ IndexOneFour <- function(index, dimFour){
 #' The comparison of columns is done by pair-wise comparisons of the non-missing values.
 #' This procedure is robust to missing values, if all columns of the matrix
 #' have a similar (potentially shifted) distribution of values.
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @param mat Numeric matrix. May contain \code{NA} values.
 #' @return Numeric vector of length \code{ncol(mat)}.
 #' @note Interfaces a C++ function. The R package Rcpp is used.  
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' @importFrom Rcpp evalCpp
 #' @useDynLib gapfill, .registration = TRUE
 #' @examples
@@ -901,7 +901,7 @@ Score <- function(mat) {
 }
 
 #' @name EstimateQuantile
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Estimate the Quantile of a Missing Value
 #' @description Helper function for \code{\link{Predict}}.
 #' The function estimates the quantile of the missing value at position \code{mp} from the
@@ -920,7 +920,7 @@ Score <- function(mat) {
 #' approximate 90\% uncertainty interval is returned.
 #' @seealso \code{\link{Predict}}.
 #' @references F. Gerber, R. de Jong, M. E. Schaepman, G. Schaepman-Strub, and R. Furrer (2018)
-#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \url{https://doi.org/10.1109/TGRS.2017.2785240}. 
+#' in IEEE Transactions on Geoscience and Remote Sensing, pp. 1-13, \doi{10.1109/TGRS.2017.2785240}. 
 #' @examples
 #' a <- Subset(data = ndvi, mp = c(1, 3, 1, 2), i = 0)
 #' EstimateQuantile(a = a, mp = attr(a, "mp"), nQuant = 2)
@@ -956,7 +956,7 @@ EstimateQuantile <- function (a, mp, nQuant, predictionInterval = FALSE) {
 
 #' @name Validate
 #' @aliases validate
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Validation with RMSE
 #' @description The function summarizes the validation scenario and
 #' returns the root mean squared error (RMSE) of the predictions.
@@ -1033,7 +1033,7 @@ Validate <- function (dataObserved,
 }
 
 #' @name Image 
-#' @author Florian Gerber, \email{florian.gerber@@math.uzh.ch}.
+#' @author Florian Gerber, \email{flora.fauna.gerber@@gmail.com}.
 #' @title Image Panels
 #' @description
 #' Creates an image panel to visualize data in 4, 3 or 2 dimensional arrays (e.g., space-time data). 
